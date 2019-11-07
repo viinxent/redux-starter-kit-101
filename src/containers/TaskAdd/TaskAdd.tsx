@@ -5,7 +5,7 @@ import {
   PostAddRounded as PostAddRoundedIcon
 } from '@material-ui/icons';
 
-import InputIcon from '../../Components/InputIcon/InputIcon';
+import InputIcon from 'components/InputIcon/InputIcon';
 
 const TaskAdd = () => {
   const onSubmit = (value: string) => {

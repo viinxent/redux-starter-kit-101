@@ -5,7 +5,7 @@ import {
   KeyboardReturnRounded as KeyboardReturnRoundedIcon
 } from '@material-ui/icons';
 
-import InputIcon from '../../Components/InputIcon/InputIcon';
+import InputIcon from 'components/InputIcon/InputIcon';
 
 const Search = () => {
   const onSubmit = (value: string) => {

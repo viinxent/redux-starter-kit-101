@@ -3,7 +3,7 @@ import { List } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
 import uuid from 'uuid';
 
-import Task from '../../Components/Task/Task';
+import Task from 'components/Task/Task';
 
 const TASK_COUNT = 25;
 const TASKS: { name: string; done: boolean; id: string }[] = [];

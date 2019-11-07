@@ -13,9 +13,9 @@ import {
   makeStyles
 } from '@material-ui/core/styles';
 
-import Tasks from './Containers/Tasks/Tasks';
-import TaskAdd from './Containers/TaskAdd/TaskAdd';
-import Search from './Containers/Search/Search';
+import Tasks from 'containers/Tasks/Tasks';
+import TaskAdd from 'containers/TaskAdd/TaskAdd';
+import Search from 'containers/Search/Search';
 
 const theme = (type?: 'dark' | 'light') => {
   return createMuiTheme({
@@ -24,19 +24,6 @@ const theme = (type?: 'dark' | 'light') => {
       background: {
         default: type === 'light' ? '#EDF1F4' : '#121212',
         paper: type === 'light' ? '#FFFFFF' : '#1D1D1D'
-      }
-    },
-    overrides: {
-      MuiCssBaseline: {
-        '@global': {
-          '*': {
-            'scrollbar-width': 'thin'
-          },
-          '*::webkit-scrollbar': {
-            width: '4px',
-            height: '4px'
-          }
-        }
       }
     }
   });
