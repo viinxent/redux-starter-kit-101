@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
   Search as SearchIcon,
@@ -6,14 +7,20 @@ import {
 } from '@material-ui/icons';
 
 import InputIcon from 'components/InputIcon/InputIcon';
+import { searchTaskAction } from 'store/reducers/task';
 
 const Search = () => {
+  const dispatch = useDispatch();
+
+  /**
+   * TODO: Add a debounce as this is expensive
+   */
   const onSubmit = (value: string) => {
-    console.log(value);
+    dispatch(searchTaskAction(value));
   };
 
   const onChange = (value: string) => {
-    console.log(value);
+    dispatch(searchTaskAction(value));
   };
 
   return (
@@ -27,4 +34,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default memo(Search);

@@ -5,36 +5,56 @@ import { SvgIconComponent } from '@material-ui/icons';
 interface IProps {
   defaultValue?: string;
   placeholder?: string;
+  name?: string;
+  id?: string;
   FirstIcon?: SvgIconComponent;
   LastIcon?: SvgIconComponent;
+  clearOnSubmit?: boolean;
+  disabled?: boolean;
+  required?: boolean;
   onChange?: (value: string) => void;
-  onSubmit: (value: string) => void;
+  onSubmit?: (value: string) => void;
 }
+
+const defaultProps: IProps = {
+  defaultValue: '',
+  placeholder: '',
+  disabled: false,
+  required: false,
+  clearOnSubmit: false,
+  name: '',
+  id: '',
+};
 
 const useStyles = makeStyles({
   con: {
     display: 'flex',
     alignItems: 'center',
-    padding: '2px'
+    padding: '2px',
   },
   input: {
     flex: 1,
-    fontSize: '18px'
-  }
+    fontSize: '18px',
+  },
 });
 
 const InputIcon: FC<IProps> = props => {
   const {
     FirstIcon,
     LastIcon,
+    clearOnSubmit,
     defaultValue,
+    id,
+    name,
     placeholder,
     onSubmit,
-    onChange
+    onChange,
+    disabled,
+    required,
   } = props;
 
   const classes = useStyles();
-  const [value, setValue] = useState(defaultValue || '');
+  const [value, setValue] = useState(defaultValue);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -44,31 +64,38 @@ const InputIcon: FC<IProps> = props => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (value !== undefined) onSubmit(value);
+    if (onSubmit && value !== undefined) onSubmit(value);
+    if (clearOnSubmit) setValue('');
   };
 
   return (
     <form onSubmit={handleSubmit} className={classes.con}>
       {FirstIcon && (
-        <IconButton type="submit">
+        <IconButton id={`${id}-first-button`} type="submit" disabled={disabled}>
           <FirstIcon />
         </IconButton>
       )}
 
       <InputBase
+        id={id}
+        name={name}
         className={classes.input}
         onChange={handleChange}
         placeholder={placeholder}
         value={value}
+        required={required}
+        disabled={disabled}
       />
 
       {LastIcon && (
-        <IconButton type="submit">
+        <IconButton id={`${id}-last-button`} type="submit" disabled={disabled}>
           <LastIcon />
         </IconButton>
       )}
     </form>
   );
 };
+
+InputIcon.defaultProps = defaultProps;
 
 export default InputIcon;

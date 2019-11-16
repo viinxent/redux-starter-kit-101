@@ -1,31 +1,63 @@
-import React from 'react';
-import { List } from '@material-ui/core';
+import React, { Fragment, FC, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { List, ListItem, Divider } from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
-import uuid from 'uuid';
+
+import {
+  fetchTaskAction,
+  removeTaskAction,
+  updateTaskAction,
+  IUpdateTaskActionPayload,
+} from 'store/reducers/task';
+
+import { selectTaskDone, selectTaskPending } from 'store/selectors/task';
 
 import Task from 'components/Task/Task';
 
-const TASK_COUNT = 25;
-const TASKS: { name: string; done: boolean; id: string }[] = [];
-
-for (let t = 0; t < TASK_COUNT; t++) {
-  TASKS.push({
-    name: `Task ${t + 1} - ${uuid.v4()}`,
-    done: false,
-    id: uuid.v4()
-  });
+interface IProps {
+  type?: string;
 }
 
-const Tasks = () => {
+const defaultProps: IProps = {
+  type: 'pending',
+};
+
+const Tasks: FC<IProps> = props => {
+  const { type } = props;
+  const dispatch = useDispatch();
+
+  const selectTask = type === 'done' ? selectTaskDone : selectTaskPending;
+  const tasks = useSelector(selectTask);
+  const tasksCount = tasks.length;
+
+  useEffect(() => {
+    dispatch(fetchTaskAction());
+  }, [dispatch]);
+
+  const onDelete = (id: string) => {
+    dispatch(removeTaskAction(id));
+  };
+
+  const onUpdate = (data: IUpdateTaskActionPayload) => {
+    dispatch(updateTaskAction(data));
+  };
+
   return (
     <Scrollbars autoHide>
-      <List disablePadding dense>
-        {TASKS.map(task => (
-          <Task key={task.id} {...task} />
+      <List disablePadding className={`tasks ${type}`}>
+        {tasks.map((task, i) => (
+          <Fragment key={task._id}>
+            <ListItem>
+              <Task data={task} onDelete={onDelete} onUpdate={onUpdate} />
+            </ListItem>
+            {i + 1 !== tasksCount ? <Divider /> : null}
+          </Fragment>
         ))}
       </List>
     </Scrollbars>
   );
 };
+
+Tasks.defaultProps = defaultProps;
 
 export default Tasks;
